@@ -18,8 +18,9 @@
  * This use case introduces fundamental comparison logic
  * before using advanced data structures.
  *
- * @author Developer
- * @version 2.0
+ * @author
+ * @version 4.
+ *
  */
 import java.util.Scanner;
 
@@ -27,20 +28,29 @@ public class PalindromeCheckerApp {
 
     public static void main(String[] args) {
 
-        System.out.print("Input Text: ");
-        Scanner sc = new Scanner(System.in);
-        String input = sc.nextLine();
+        Scanner sc=new Scanner(System.in);
 
-        boolean isPalindrome = true;
+        System.out.print("Input : ");
+        String input=sc.nextLine();
 
-        for (int i = 0; i < input.length() / 2; i++) {
-            if (input.charAt(i) != input.charAt(input.length() - 1 - i)) {
-                isPalindrome = false;
+        char[] chars=input.toCharArray();
+
+        int start=0;
+        int end=chars.length - 1;
+
+        boolean isPalindrome=true;
+
+        while(start<end){
+            if (chars[start]!=chars[end]) {
+                isPalindrome=false;
                 break;
             }
+            start++;
+            end--;
         }
 
-        System.out.println("Is it a Palindrome? " + isPalindrome);
+        System.out.println("Is Palindrome?"+isPalindrome);
+
         sc.close();
     }
 }
