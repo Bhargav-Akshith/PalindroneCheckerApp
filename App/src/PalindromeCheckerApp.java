@@ -22,32 +22,84 @@
  * @version 4.
  *
  */
-import java.util.*;
+import java.util.Scanner;
+
+class Node {
+    char data;
+    Node next;
+
+    Node(char data) {
+        this.data = data;
+        this.next = null;
+    }
+}
 
 public class PalindromeCheckerApp {
+
+    public static Node reverse(Node head) {
+        Node prev = null;
+        Node current = head;
+        while (current != null) {
+            Node next = current.next;
+            current.next = prev;
+            prev = current;
+            current = next;
+        }
+        return prev;
+    }
+
+    public static boolean isPalindrome(Node head) {
+        if (head == null || head.next == null) {
+            return true;
+        }
+
+        Node slow = head;
+        Node fast = head;
+
+        while (fast.next != null && fast.next.next != null) {
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+
+        Node secondHalf = reverse(slow.next);
+        Node firstHalf = head;
+
+        Node temp = secondHalf;
+        boolean result = true;
+
+        while (temp != null) {
+            if (firstHalf.data != temp.data) {
+                result = false;
+                break;
+            }
+            firstHalf = firstHalf.next;
+            temp = temp.next;
+        }
+
+        slow.next = reverse(secondHalf);
+        return result;
+    }
+
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         System.out.print("Enter a string: ");
         String input = sc.nextLine().replaceAll("\\s+", "").toLowerCase();
 
-        Deque<Character> deque = new ArrayDeque<>();
+        Node head = null;
+        Node tail = null;
 
         for (char ch : input.toCharArray()) {
-            deque.addLast(ch);
-        }
-
-        boolean isPalindrome = true;
-
-        while (deque.size() > 1) {
-            char front = deque.removeFirst();
-            char rear = deque.removeLast();
-            if (front != rear) {
-                isPalindrome = false;
-                break;
+            Node newNode = new Node(ch);
+            if (head == null) {
+                head = newNode;
+                tail = newNode;
+            } else {
+                tail.next = newNode;
+                tail = newNode;
             }
         }
 
-        if (isPalindrome) {
+        if (isPalindrome(head)) {
             System.out.println("The string is a Palindrome");
         } else {
             System.out.println("The string is not a Palindrome");
